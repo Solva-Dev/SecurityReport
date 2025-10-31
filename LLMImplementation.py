@@ -1,6 +1,7 @@
 import os
 import google.generativeai as genai
 import json
+from dotenv import load_dotenv
 
 domain_data = {
     "domain": "example.com",
@@ -27,19 +28,19 @@ in an item structure with its CVE identifier. At the end of the report include
 a suggestion section with recommendations to mitigate the identified vulnerabilities 
 in a paragraph structure. Generate the report with an HTML format.
 """
+load_dotenv()  # Load environment variables from .env file
 
 api_key = os.getenv("GEMINI_API_KEY")
+
 if not api_key:
     raise ValueError("No se encontró la variable GEMINI_API_KEY en el archivo .env")
 
-
-genai.configure(api_key)
+genai.configure(api_key=api_key)
 
 model = genai.GenerativeModel("gemini-2.0-flash")
 
 response = model.generate_content(prompt)
 
-print(response.text)
 file_name = "report.txt"
 try:
     with open(file_name, "w") as file:
