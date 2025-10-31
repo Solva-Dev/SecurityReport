@@ -43,7 +43,7 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 
 response = model.generate_content(prompt)
 
-file_name = "report.html"
+file_name = f"report_{domain_data['company_name']}.html"
 try:
     with open(file_name, "w") as file:
         file.write(response.text.split('```')[1][4:])
