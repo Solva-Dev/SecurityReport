@@ -7,7 +7,8 @@ domain_data = {
     "domain": "example.com",
     "ns": ["ns1.example.com", "ns2.example.com"],
     "mx": ["mail.example.com", "mx2.example.com"],
-    "technologies": ["WordPress 6.4", "Apache 2.4.58", "OpenSSL 1.1.1"]
+    "technologies": ["WordPress 6.4", "Apache 2.4.58", "OpenSSL 1.1.1"],
+    "company_name": "Aprender-Salud"
 }
 
 with open("domain_data.json", "w") as f:
@@ -23,11 +24,12 @@ based on the listed NS, MX, and technologies. The final report must include
 a description of each technology and its known vulnerabilities. The report should be
 at most 1 pragraph long for each technology. After that create a listing structure
 describing potential vulnerabilities for the domain {domain_data['domain']} which 
-belongs to the company Aprender-Salud. Each vulnerability mentioned should be listed 
+belongs to the company {domain_data['company_name']}. Each vulnerability mentioned should be listed 
 in an item structure with its CVE identifier. At the end of the report include 
 a suggestion section with recommendations to mitigate the identified vulnerabilities 
 in a paragraph structure. Generate the report with an HTML format.
 """
+
 load_dotenv()  # Load environment variables from .env file
 
 api_key = os.getenv("GEMINI_API_KEY")
@@ -41,10 +43,10 @@ model = genai.GenerativeModel("gemini-2.0-flash")
 
 response = model.generate_content(prompt)
 
-file_name = "report.txt"
+file_name = "report.html"
 try:
     with open(file_name, "w") as file:
-        file.write(response.text)
+        file.write(response.text.split('```')[1][4:])
     print(f"String successfully saved to '{file_name}'")
 except IOError as e:
     print(f"Error saving string to file: {e}")
